@@ -1,0 +1,26 @@
+{
+  "CallOnNetworkchange": false,
+  "NetworkChangeAdapter": "enp031f6",
+  "SetProxyOnStartUp": true,
+
+  "UniquePrefixLine": "### Created by LinuxProxyChanger",
+  "UniqueSuffixLine": "### End of LinuxProxyChanger",
+
+  "BashPath": "/bin/bash",
+  "BashCommandEnable": "source /etc/enviroment",
+  "BashCommandDisable": "proxy_http=\nproxys_http=\nproxy_ftp=",
+
+  "ProxyIp": "192.168.0.1",
+  "Timeout": 5,
+
+  "Files": [
+    {
+      "Path": "C:/Users/lgund/Source/Repos/First-Coder/LinuxProxyChanger/bin/Debug/netcoreapp3.1/sample",
+      "Proxy": [
+        "Zeile1",
+        "Zeile2",
+        "Zeile3"
+      ]
+    }
+  ]
+}
