@@ -1,0 +1,16 @@
+[Unit]
+Description=LinuxProxyChanger
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/Proxy_Changer/
+User=root
+Group=root
+Restart=on-failure
+RestartSec=5s
+ExecStart=/usr/bin/screen -DmS LinuxProxyChanger /opt/Proxy_Changer/LinuxProxyChanger
+ExecStop=/usr/bin/screen -S LinuxProxyChanger -X quit
+
+[Install]
+WantedBy=multi-user.target
