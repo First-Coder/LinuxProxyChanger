@@ -5,18 +5,60 @@
 [![.NET](https://github.com/First-Coder/LinuxProxyChanger/actions/workflows/dotnet.yml/badge.svg)](https://github.com/First-Coder/LinuxProxyChanger/actions/workflows/dotnet.yml)
 [![CodeQL](https://github.com/First-Coder/LinuxProxyChanger/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/First-Coder/LinuxProxyChanger/actions/workflows/codeql-analysis.yml)
 
-# ARK Spawncode Generator
+# LinuxProxyChanger
 
-## Description
+LinuxProxyChanger is a dotnet core application that allows you to auto adjust the proxy on any linux platform. The application reacts to network changes and uses a hotst to check which network it is on.
 
-soon
+## Installation
 
-## Installation / Usage
+Install the following packages in the terminal
 
-soon
+```bash
+$ wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb
+$ sudo dpkg -i packages-microsoft-prod.deb
+$ sudo apt update
+$ sudo apt install apt-transport-https
+$ sudo apt install dotnet-runtime-3.1
+```
 
-## Other Projects
+Move the Proxy_Changer directory to /opt/Proxy_Changer/.
 
-soon
+Move the file LinuxProxyChanger.service to the Systemd directory.
+
+activate the autostart with the following command
+
+```bash
+systemctl enable LinuxProxyChanger
+```
+
+## Usage
+
+Start programme manually
+```bash
+systemctl start LinuxProxyChanger
+```
+
+Stop programme manually
+```bash
+systemctl stop LinuxProxyChanger
+```
+
+Check programme status
+```bash
+systemctl status LinuxProxyChanger
+```
+
+You can call up the console of the program with the following command
+
+```bash
+screen -r LinuxProxyChanger
+```
+## Contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
+
+## License
+[MIT](https://choosealicense.com/licenses/mit/)
 
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate?hosted_button_id=8PBF4BN7R46TE)
