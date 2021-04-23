@@ -1,26 +1,39 @@
 {
-  "CallOnNetworkchange": false,
-  "NetworkChangeAdapter": "enp031f6",
-  "SetProxyOnStartUp": true,
-
-  "UniquePrefixLine": "### Created by LinuxProxyChanger",
-  "UniqueSuffixLine": "### End of LinuxProxyChanger",
-
-  "BashPath": "/bin/bash",
-  "BashCommandEnable": "source /etc/enviroment",
-  "BashCommandDisable": "proxy_http=\nproxys_http=\nproxy_ftp=",
-
-  "ProxyIp": "192.168.0.1",
-  "Timeout": 5,
-
-  "Files": [
-    {
-      "Path": "C:/Users/lgund/Source/Repos/First-Coder/LinuxProxyChanger/bin/Debug/netcoreapp3.1/sample",
-      "Proxy": [
-        "Zeile1",
-        "Zeile2",
-        "Zeile3"
+  "CallOnNetworkchange":false,
+  "NetworkChangeAdapter":"<NetworkAdapterName>",
+  "SetProxyOnStartUp":true,
+  "UniquePrefixLine":"### Created by LinuxProxyChanger",
+  "UniqueSuffixLine":"### End of LinuxProxyChanger",
+  "BashPath":"/bin/bash",
+  "BashCommandEnable":"source /etc/environment",
+  "BashCommandDisable":"proxy_http=\nproxys_http=\nproxy_ftp=",
+  "ProxyIp":"10.1.0.0",
+  "Timeout":5,
+  "Files":[
+     {
+        "Path":"/etc/environment",
+        "Proxy":[
+           "http_proxy=http://<ProxyIP>:<ProxyPort>/",
+           "http_proxy=https://<ProxyIP>:<ProxyPort>/",
+           "ftp_proxy=http://<ProxyIP>:<ProxyPort>/",
+           "no_proxy=<ProxyExceptions>"
+        ]
+     },
+     {
+        "Path":"/etc/systemd/system/docker.service.d/http-proxy.conf",
+        "Proxy":[
+           "[Service]",
+           "Environment=\"HTTP_PROXY=http://<ProxyIP>:<ProxyPort>\"",
+           "Environment=\"HTTPS_PROXY=http://<ProxyIP>:<ProxyPort>\"",
+           "Environment=\"ProxyExceptions>\""
+        ]
+     },
+     {
+      "Path":"/etc/apt/apt.conf.d/proxy.conf",
+      "Proxy":[
+         "Acquire::http::Proxy \"http://<ProxyIP>:<ProxyPort>/\";",
+         "Acquire::https::Proxy \"http://<ProxyIP>:<ProxyPort>/\";"
       ]
-    }
+   }
   ]
 }
