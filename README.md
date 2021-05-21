@@ -19,6 +19,7 @@ $ sudo dpkg -i packages-microsoft-prod.deb
 $ sudo apt update
 $ sudo apt install apt-transport-https
 $ sudo apt install dotnet-runtime-3.1
+$ sudo apt install screen
 ```
 
 Move the Proxy_Changer directory to /opt/Proxy_Changer/.
