@@ -1,6 +1,6 @@
 {
   "CallOnNetworkchange":false,
-  "NetworkChangeAdapter":"<NetworkAdapterName>",
+  "NetworkChangeAdapters":"<NetworkAdapterName(s) seperate with comma>",
   "SetProxyOnStartUp":true,
   "UniquePrefixLine":"### Created by LinuxProxyChanger",
   "UniqueSuffixLine":"### End of LinuxProxyChanger",

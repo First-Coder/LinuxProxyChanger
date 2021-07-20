@@ -5,7 +5,7 @@ namespace LinuxProxyChanger.Models
     public class Settings
     {
         public bool CallOnNetworkchange { get; set; }
-        public string NetworkChangeAdapter { get; set; }
+        public string NetworkChangeAdapters { get; set; }
         public bool SetProxyOnStartUp { get; set; }
 
         public string UniquePrefixLine { get; set; }

@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Text;
@@ -145,9 +146,11 @@ namespace LinuxProxyChanger
         static void AddressChangedCallback(object sender, EventArgs e)
         {
             NetworkInterface[] adapters = NetworkInterface.GetAllNetworkInterfaces();
+            var networkChangeAdapterList = settings.NetworkChangeAdapters.Split(",");
+
             foreach (NetworkInterface n in adapters)
             {
-                if(n.OperationalStatus == OperationalStatus.Up && n.Id.Equals(settings.NetworkChangeAdapter))
+                if(n.OperationalStatus == OperationalStatus.Up && networkChangeAdapterList.Contains(n.Id))
                 {
                     status = PingTest();
                     if (status == IPStatus.Success)
