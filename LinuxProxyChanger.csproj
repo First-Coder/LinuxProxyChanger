@@ -7,7 +7,18 @@
     <Company>First-Coder</Company>
     <Copyright>L. Gmann</Copyright>
     <PackageProjectUrl>https://first-coder.de/</PackageProjectUrl>
+    <AssemblyVersion>1.0.0.1</AssemblyVersion>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="settings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="settings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
@@ -15,12 +26,6 @@
 
   <ItemGroup>
     <Resource Include="settings.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="settings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
