@@ -1,4 +1,5 @@
 ﻿using LinuxProxyChanger.Models;
+using Mono.Unix.Native;
 using Newtonsoft.Json;
 using System;
 using System.Diagnostics;
@@ -6,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -13,6 +15,8 @@ namespace LinuxProxyChanger
 {
     class Program
     {
+        private static bool IsRoot => RuntimeInformation.IsOSPlatform(OSPlatform.Linux) ? Syscall.getuid().Equals(0) : false;
+
         /// <summary>
         /// Settings json file
         /// </summary>
@@ -58,6 +62,11 @@ namespace LinuxProxyChanger
                 }
             }
 
+            if (settings.CallOnNetworkchange)
+            {
+                NetworkChange.NetworkAddressChanged += new NetworkAddressChangedEventHandler(AddressChangedCallback);
+            }
+
             ConsoleKeyInfo cki;
             do
             {
@@ -79,6 +88,8 @@ namespace LinuxProxyChanger
                         break;
                 }
             } while (cki.Key != ConsoleKey.Escape);
+
+            Environment.Exit(0);
         }
 
         /// <summary>
@@ -110,6 +121,11 @@ namespace LinuxProxyChanger
             WriteColor($"[// Title:] {Assembly.GetEntryAssembly().GetName().Name}", ConsoleColor.DarkGreen);
             WriteColor($"[// Version:] {Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyFileVersionAttribute>().Version}", ConsoleColor.DarkGreen);
             WriteColor($"[// Autor:] {Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyCopyrightAttribute>().Copyright}", ConsoleColor.DarkGreen);
+            WriteColor(@"[//--Exit Codes---------------------------------------------------]", ConsoleColor.DarkGreen);
+            WriteColor($"[// 0:] Application successful exited", ConsoleColor.DarkGreen);
+            WriteColor($"[// 1:] Supported OS is not given", ConsoleColor.DarkGreen);
+            WriteColor($"[// 2:] User has no root permissions", ConsoleColor.DarkGreen);
+            WriteColor($"[// 3:] Networksadapters are not set", ConsoleColor.DarkGreen);
             WriteColor(@"[//--Settings-----------------------------------------------------]", ConsoleColor.DarkGreen);
             WriteColor($"[// Call on Networkchange:] {settings.CallOnNetworkchange}", ConsoleColor.DarkGreen);
             WriteColor($"[// Set proxy on Autostart:] {settings.SetProxyOnStartUp}", ConsoleColor.DarkGreen);
@@ -129,7 +145,22 @@ namespace LinuxProxyChanger
                 WriteColor(@"[//---------------------------------------------------------------]", ConsoleColor.DarkRed);
                 if (!Debugger.IsAttached)
                 {
-                    return;
+                    Environment.Exit(1);
+                }
+                else
+                {
+                    Console.WriteLine(Environment.NewLine);
+                }
+            }
+
+            if (!IsRoot)
+            {
+                WriteColor(@"[//--No root permissions------------------------------------------]", ConsoleColor.DarkRed);
+                WriteColor($"[//:] Please start this tool as root", ConsoleColor.DarkRed);
+                WriteColor(@"[//---------------------------------------------------------------]", ConsoleColor.DarkRed);
+                if (!Debugger.IsAttached)
+                {
+                    Environment.Exit(2);
                 }
                 else
                 {
@@ -144,7 +175,7 @@ namespace LinuxProxyChanger
                 WriteColor(@"[//---------------------------------------------------------------]", ConsoleColor.DarkRed);
                 if (!Debugger.IsAttached)
                 {
-                    return;
+                    Environment.Exit(3);
                 }
                 else
                 {
@@ -160,15 +191,16 @@ namespace LinuxProxyChanger
         /// <param name="e"></param>
         static void AddressChangedCallback(object sender, EventArgs e)
         {
+            status = IPStatus.Unknown;
             NetworkInterface[] adapters = NetworkInterface.GetAllNetworkInterfaces();
 
-            if(adapters == null) // No networkadapters found
+            if (adapters != null) // No networkadapters found
             {
                 var networkChangeAdapterList = settings.NetworkChangeAdapters.Split(",");
 
                 foreach (NetworkInterface n in adapters)
                 {
-                    if (n.OperationalStatus == OperationalStatus.Up && networkChangeAdapterList.Contains(n.Id))
+                    if (n.OperationalStatus == OperationalStatus.Up && networkChangeAdapterList.Contains(n.Id) && status != IPStatus.Success)
                     {
                         status = PingTest();
 
@@ -196,15 +228,22 @@ namespace LinuxProxyChanger
         /// <returns>Return status of the request</returns>
         static IPStatus PingTest()
         {
-            Ping sender = new Ping();
-            PingOptions options = new PingOptions();
+            try
+            {
+                Ping sender = new Ping();
+                PingOptions options = new PingOptions();
 
-            options.DontFragment = true;
-            string data = "aaaaaaaaaaaaaaaaaaaaaaaaaa";
-            byte[] buffer = Encoding.ASCII.GetBytes(data);
+                options.DontFragment = true;
+                string data = "aaaaaaaaaaaaaaaaaaaaaaaaaa";
+                byte[] buffer = Encoding.ASCII.GetBytes(data);
 
-            PingReply reply = sender.Send(settings.ProxyIp, settings.Timeout, buffer, options);
-            return reply.Status;
+                PingReply reply = sender.Send(settings.ProxyIp, settings.Timeout, buffer, options);
+                return reply.Status;
+            }
+            catch
+            {
+                return IPStatus.DestinationHostUnreachable;
+            }
         }
 
         /// <summary>
