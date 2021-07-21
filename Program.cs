@@ -164,31 +164,29 @@ namespace LinuxProxyChanger
 
             if(adapters == null) // No networkadapters found
             {
-                return;
-            }
+                var networkChangeAdapterList = settings.NetworkChangeAdapters.Split(",");
 
-            var networkChangeAdapterList = settings.NetworkChangeAdapters.Split(",");
-
-            foreach (NetworkInterface n in adapters)
-            {
-                if(n.OperationalStatus == OperationalStatus.Up && networkChangeAdapterList.Contains(n.Id))
+                foreach (NetworkInterface n in adapters)
                 {
-                    status = PingTest();
-
-                    // Update staus text in console
-                    Clear();
-
-                    if (status == IPStatus.Success)
+                    if (n.OperationalStatus == OperationalStatus.Up && networkChangeAdapterList.Contains(n.Id))
                     {
-                        EnableProxy();
+                        status = PingTest();
+
+                        // Update staus text in console
+                        Clear();
+
+                        if (status == IPStatus.Success)
+                        {
+                            EnableProxy();
+                        }
+                        else
+                        {
+                            DisableProxy();
+                        }
                     }
-                    else
-                    {
-                        DisableProxy();
-                    }
+                    //Console.WriteLine("   {0} is {1}", n.Name, n.OperationalStatus);
+                    //Console.WriteLine("Description is {0} [{1}]", n.Description, n.Id);
                 }
-                //Console.WriteLine("   {0} is {1}", n.Name, n.OperationalStatus);
-                //Console.WriteLine("Description is {0} [{1}]", n.Description, n.Id);
             }
         }
 
