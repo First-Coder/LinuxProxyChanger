@@ -252,7 +252,7 @@ namespace LinuxProxyChanger
                 }
                 else
                 {
-                    WriteColor($"[// Linux Bash:] Command exit with code {proc.ExitCode}", ConsoleColor.DarkRed);
+                    WriteColor($"[// Linux Bash:] Command exit with code {proc.ExitCode}", ConsoleColor.DarkYellow);
                 }
             }
             catch(Exception e)
