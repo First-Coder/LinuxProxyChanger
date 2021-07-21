@@ -161,6 +161,12 @@ namespace LinuxProxyChanger
         static void AddressChangedCallback(object sender, EventArgs e)
         {
             NetworkInterface[] adapters = NetworkInterface.GetAllNetworkInterfaces();
+
+            if(adapters == null) // No networkadapters found
+            {
+                return;
+            }
+
             var networkChangeAdapterList = settings.NetworkChangeAdapters.Split(",");
 
             foreach (NetworkInterface n in adapters)
