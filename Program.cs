@@ -244,25 +244,25 @@ namespace LinuxProxyChanger
         {
             foreach(var file in settings.Files)
             {
-                WriteColor(@$"[//--Enable Proxy for {file.Path}]", ConsoleColor.DarkGreen);
-                WriteColor($"[// EnableProxy:] Check file {file.Path} for old entrys", ConsoleColor.DarkGreen);
+                WriteColor(@$"[// ### Enable Proxy for {file.Path}]", ConsoleColor.DarkGreen);
+                WriteColor($"[// #] Check file {file.Path} for old entrys", ConsoleColor.DarkGreen);
                 if (!RemoveProxyFromFile(file))
                 {
-                    WriteColor($"[// EnableProxy:] Check file {file.Path} failed", ConsoleColor.DarkRed);
+                    WriteColor($"[// # Error:] Check file {file.Path} failed", ConsoleColor.DarkRed);
                     return;
                 }
 
-                WriteColor($"[// EnableProxy:] Setup file {file.Path}", ConsoleColor.DarkGreen);
+                WriteColor($"[// #] Setup file {file.Path}", ConsoleColor.DarkGreen);
                 if (!File.Exists(file.Path))
                 {
-                    WriteColor($"[// Error:] File path {file.Path} could not be found", ConsoleColor.DarkRed);
+                    WriteColor($"[// # Error:] File path {file.Path} could not be found", ConsoleColor.DarkRed);
                     return;
                 }
 
                 File.AppendAllLines(file.Path, new[] { settings.UniquePrefixLine });
                 File.AppendAllLines(file.Path, file.Proxy);
                 File.AppendAllLines(file.Path, new[] { settings.UniqueSuffixLine });
-                WriteColor(@$"[//--Done.]", ConsoleColor.DarkGreen);
+                WriteColor(@$"[// ### Done.]", ConsoleColor.DarkGreen);
             }
             ConfirmProxy(true);
         }
@@ -274,9 +274,9 @@ namespace LinuxProxyChanger
         {
             foreach (var file in settings.Files)
             {
-                WriteColor(@$"[//--Disable Proxy for {file.Path}]", ConsoleColor.DarkGreen);
+                WriteColor(@$"[// ### Disable Proxy for {file.Path}]", ConsoleColor.DarkGreen);
                 RemoveProxyFromFile(file);
-                WriteColor(@$"[//--Done.]", ConsoleColor.DarkGreen);
+                WriteColor(@$"[// ### Done.]", ConsoleColor.DarkGreen);
             }
             ConfirmProxy(false);
         }
@@ -288,10 +288,10 @@ namespace LinuxProxyChanger
         /// <returns>Success of the action</returns>
         static bool RemoveProxyFromFile(FileSettings file)
         {
-            WriteColor($"[// DisableProxy:] Setup file {file.Path}", ConsoleColor.DarkGreen);
+            WriteColor($"[// #] Setup file {file.Path}", ConsoleColor.DarkGreen);
             if (!File.Exists(file.Path))
             {
-                WriteColor($"[// Error:] File path {file.Path} could not be found", ConsoleColor.DarkRed);
+                WriteColor($"[// # Error:] File path {file.Path} could not be found", ConsoleColor.DarkRed);
                 return false;
             }
 
@@ -320,17 +320,17 @@ namespace LinuxProxyChanger
                 }
             }
 
-            WriteColor($"[// DisableProxy:] Override file {file.Path}", ConsoleColor.DarkGreen);
+            WriteColor($"[// #] Override file {file.Path}", ConsoleColor.DarkGreen);
             var attributes = File.GetAttributes(file.Path);
             File.Delete(file.Path);
             if (File.Exists(file.Path))
             {
-                WriteColor($"[// Error:] File {file.Path} could not be deleted", ConsoleColor.DarkRed);
+                WriteColor($"[// # Error:] File {file.Path} could not be deleted", ConsoleColor.DarkRed);
                 return false;
             }
             File.Move(tmpFile, file.Path);
 
-            WriteColor($"[// DisableProxy:] Set file permissions", ConsoleColor.DarkGreen);
+            WriteColor($"[// #] Set file permissions", ConsoleColor.DarkGreen);
             File.SetAttributes(file.Path, attributes);
 
             return true;
