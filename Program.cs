@@ -174,6 +174,10 @@ namespace LinuxProxyChanger
                 if(n.OperationalStatus == OperationalStatus.Up && networkChangeAdapterList.Contains(n.Id))
                 {
                     status = PingTest();
+
+                    // Update staus text in console
+                    Clear();
+
                     if (status == IPStatus.Success)
                     {
                         EnableProxy();
