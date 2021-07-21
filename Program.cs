@@ -136,6 +136,21 @@ namespace LinuxProxyChanger
                     Console.WriteLine(Environment.NewLine);
                 }
             }
+
+            if (string.IsNullOrEmpty(settings.NetworkChangeAdapters))
+            {
+                WriteColor(@"[//--No Networkadapters-------------------------------------------]", ConsoleColor.DarkRed);
+                WriteColor($"[//:] Please insert Networkadapters (\"NetworkChangeAdapters\") in the settings.json", ConsoleColor.DarkRed);
+                WriteColor(@"[//---------------------------------------------------------------]", ConsoleColor.DarkRed);
+                if (!Debugger.IsAttached)
+                {
+                    return;
+                }
+                else
+                {
+                    Console.WriteLine(Environment.NewLine);
+                }
+            }
         }
 
         /// <summary>
