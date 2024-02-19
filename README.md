@@ -1,11 +1,11 @@
-[![First-Coder](https://first-coder.de/images/logos/LogoFirstCoderDarkHorizontal.png)](https://first-coder.de/)
+<p align="center">
+  <img src="https://github.com/First-Coder/LinuxProxyChanger/assets/13957661/9117f5f6-ca11-4bd7-92f1-b4043d1a0140">
+</p>
 
 ---
 
 [![.NET](https://github.com/First-Coder/LinuxProxyChanger/actions/workflows/dotnet.yml/badge.svg)](https://github.com/First-Coder/LinuxProxyChanger/actions/workflows/dotnet.yml)
 [![CodeQL](https://github.com/First-Coder/LinuxProxyChanger/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/First-Coder/LinuxProxyChanger/actions/workflows/codeql-analysis.yml)
-
-# LinuxProxyChanger
 
 LinuxProxyChanger is a dotnet core application that allows you to auto adjust the proxy on any linux platform. The application reacts to network changes and uses a hotst to check which network it is on.
 
